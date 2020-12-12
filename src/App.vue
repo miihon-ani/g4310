@@ -78,6 +78,7 @@ export default {
 }
 .f-container {
     display: flex;
+    flex-wrap: wrap;
 }
 .f-item {
     margin:20px
