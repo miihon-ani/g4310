@@ -23,6 +23,8 @@
       有効値：{{ calcPrecision(calcMass(), 3) }}(kg)
     </div>
   </div>
+  <hr/>
+  メモ：丸めについてはHALF_EVEN（銀行丸め／JIS丸め）を使用しています
 </template>
 
 <script>
@@ -32,21 +34,24 @@ export default {
     return {
       spgr: 7.93,
       thickness: 5,
-      width: 1024,
-      length: 2048
+      width: 1524,
+      length: 3048
     }
   },
   methods: {
     calcUnitMass() {
       const BigNumber = require('bignumber.js');
+      BigNumber.config({ ROUNDING_MODE: BigNumber.ROUND_HALF_EVEN });
       return BigNumber(this.spgr).times(this.thickness).toNumber();
     },
     calcArea() {
       const BigNumber = require('bignumber.js');
+      BigNumber.config({ ROUNDING_MODE: BigNumber.ROUND_HALF_EVEN });
       return BigNumber(this.width).times(this.length).div(1000000).toNumber();
     },
     calcMass() {
       const BigNumber = require('bignumber.js');
+      BigNumber.config({ ROUNDING_MODE: BigNumber.ROUND_HALF_EVEN });
       let unitMass = BigNumber(this.spgr).times(this.thickness).toPrecision(4);
       let area = BigNumber(this.width).times(this.length).div(1000000).toPrecision(4);
       return BigNumber(unitMass).times(area).toNumber();
@@ -55,7 +60,9 @@ export default {
     // sd:significant digits(有効桁数)
     calcPrecision(num, sd){
       const BigNumber = require('bignumber.js');
-      return BigNumber(num).toPrecision(sd);
+      BigNumber.config({ ROUNDING_MODE: BigNumber.ROUND_HALF_EVEN });
+      let result = BigNumber(num).toPrecision(sd);
+      return BigNumber(result).toNumber();
     }
   }
 }
